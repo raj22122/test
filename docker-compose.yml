@@ -1,0 +1,21 @@
+version: '3'
+services:
+  # Node.js application container
+  node-app:
+    build:
+      context: .
+      dockerfile: DockerFile
+    ports:
+      - "3000:3000"  # Map the Node.js app port to the host
+    depends_on:
+      - mongo  # Make sure the MongoDB container is started first
+    environment:
+      MONGO_URL: "mongodb://mongo:27018/mydb"  # MongoDB connection URL
+
+  # MongoDB container
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27018:27017"  # Map the MongoDB port to the host
+    volumes:
+      - ./data:/data/db  # Mount a volume to persist MongoDB data
